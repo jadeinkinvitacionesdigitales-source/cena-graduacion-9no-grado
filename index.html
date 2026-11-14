@@ -217,6 +217,14 @@ body.editing .reveal{opacity:1;transform:none}
 #editModal button.primary{background:var(--navy);color:#fff}
 #editModal .ok{color:#127a47;font-weight:600;min-height:1.2em}
 
+/* ---------- Selector de idioma ---------- */
+#lang{position:fixed;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:55;display:flex;padding:3px;gap:2px;border-radius:999px;
+  background:rgba(10,26,58,.55);border:1px solid rgba(255,255,255,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+#lang button{font:600 11px var(--sans);letter-spacing:.14em;color:#fff;background:transparent;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:5px}
+#lang button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+#lang svg{width:13px;height:13px}
+body.editing #lang{display:none}
+
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes bob{50%{transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
@@ -225,6 +233,13 @@ body.editing .reveal{opacity:1;transform:none}
 </head>
 <body class="locked">
 <canvas id="snow" aria-hidden="true"></canvas>
+
+<!-- Botón de idioma / Language toggle -->
+<div id="lang" role="group" aria-label="Language / Idioma">
+  <button type="button" data-l="en" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>EN</button>
+  <button type="button" data-l="es" aria-pressed="false">ES</button>
+</div>
+
 
 <!-- PORTADA -->
 <div id="cover" role="dialog" aria-label="Open invitation">
@@ -463,6 +478,50 @@ if (pases > 0) {
   sel.value = pases;
 }
 
+// ===== Idioma: inglés / español (?lang=es abre en español) =====
+const ES = {"Graduation Dinner · Magical Winter": "Cena de Graduación · Invierno Mágico", "You have received an invitation": "Has recibido una invitación", "Magical Winter": "Invierno Mágico", "To:": "Para:", "our special guest": "nuestro invitado especial", "Open invitation": "Abrir invitación", "9TH GRADE": "9° GRADO", "INVITES YOU TO THEIR": "TE INVITA A SU", "GRADUATION": "CENA DE", "Dinner": "Graduación", "MOVING UP · CLASS OF 2026": "PASO DE GRADO · PROMOCIÓN 2026", "You are our special guest": "Eres nuestro invitado especial", "SCROLL": "DESLIZA", "A Magical Winter Christmas": "Invierno Mágico en Navidad", "Enjoy a Magical Winter Night": "Disfruta de una Noche Mágica de Invierno", "Like snowflakes, each one of us is unique;": "Como los copos de nieve, cada uno de nosotros es único;", "together we create an unforgettable landscape.": "juntos formamos un paisaje inolvidable.", "We are closing a chapter full of learning and opening the door to new dreams. We want to celebrate it with you, under the light and magic of this Christmas season.": "Cerramos una etapa llena de aprendizajes y abrimos la puerta a nuevos sueños. Queremos celebrarlo contigo, bajo la luz y la magia de esta Navidad.", "Save the date": "Guarda la fecha", "When & Where": "¿Cuándo y dónde?", "SUNDAY": "DOMINGO", "DECEMBER": "DICIEMBRE", "Time": "Hora", "Venue": "Lugar", "InterContinental Miramar Hotel": "Hotel InterContinental Miramar", "Miramar Room · 5th Floor": "Salón Miramar · Piso 5", "Dress code": "Vestimenta", "Semi-formal": "Semi formal", "Countdown": "Faltan", "to the magical night": "para la noche mágica", "Days": "Días", "Hours": "Horas", "Sec": "Seg", "Under the winter light we will toast to the dreams come true… and to all those yet to come.": "Bajo la luz del invierno brindaremos por los sueños cumplidos… y por todos los que están por cumplirse.", "Add to my calendar": "Agendar en mi calendario", ">A night to remember": ">Una noche para recordar", "Join us for…": "Te esperamos para…", "Special dinner": "Cena especial", "Flavors that bring us together": "Sabores que nos unen", "A toast": "Brindis", "To every achievement": "Por cada logro alcanzado", "Music": "Música", "Dance the night away": "Para bailar toda la noche", "Photos": "Fotos", "Memories that last": "Recuerdos que perduran", "Graduation": "Graduación", "A new beginning": "Un nuevo comienzo", "Magic": "Magia", "Winter wonder at Christmas": "Invierno en plena Navidad", "What to wear": "Código de vestimenta", "Get inspired by winter tones:": "Inspírate en los tonos del invierno:", "Ice blue · Silver · White · Midnight blue": "Azul hielo · Plata · Blanco · Azul noche", "Shine like December’s first snowfall.": "Brilla como la primera nevada de diciembre.", ">Location": ">Ubicación", "How to get there": "¿Cómo llegar?", "Miramar Room · 5th Floor · Panama City": "Salón Miramar · Piso 5 · Ciudad de Panamá", "Kindly RSVP": "Confirma tu asistencia", "We’re counting on you": "Contamos contigo", "Your presence will be the most special gift of the night. Please confirm your attendance as soon as possible.": "Tu presencia será el regalo más especial de esta noche. Por favor confírmanos tu asistencia lo antes posible.", "Your name": "Tu nombre", "Will you join us?": "¿Nos acompañas?", "Yes, I’ll be there!": "¡Sí, ahí estaré!", "Sorry, I can’t make it": "No podré asistir", "Number of guests": "Número de personas", "Confirm via WhatsApp": "Confirmar por WhatsApp", "Limited seating · Private event": "Cupo limitado · Evento privado", "We look forward to seeing you": "Contamos con tu asistencia", "May the magic of winter light up this new beginning, and may every step we take be full of dreams yet to come true.": "Que la magia del invierno ilumine este nuevo comienzo, y que cada paso que demos esté lleno de sueños por cumplir.", "9TH GRADE · CLASS OF 2026": "9° GRADO · PROMOCIÓN 2026", ">Happy Holidays!": ">¡Felices Fiestas!"};
+Object.assign(ES, {
+  'Snow globe with a little winter cottage': 'Esfera de nieve con una casita de invierno',
+  'Couple in semi-formal attire in blue tones': 'Pareja con vestimenta semi formal en tonos azules',
+  'First and last name': 'Nombre y apellido',
+  'Map: InterContinental Miramar Hotel': 'Mapa: Hotel InterContinental Miramar',
+  'Open invitation': 'Abrir invitación',
+  'A night to remember': 'Una noche para recordar',
+  'Location': 'Ubicación',
+  'Happy Holidays!': '¡Felices Fiestas!'
+});
+let LANG = 'en';
+const T = (en, es) => LANG === 'es' ? es : en;
+const TITLE_EN = document.title;
+const i18nText = [], i18nAttr = [];
+(() => {
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    (n.parentElement.closest('script,style,#editBar,#editModal,#lang') || !n.nodeValue.trim()) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  while (w.nextNode()) i18nText.push({ n: w.currentNode, en: w.currentNode.nodeValue });
+  document.querySelectorAll('main [alt], main [placeholder], main [title], #cover[aria-label]').forEach(el =>
+    ['alt', 'placeholder', 'title', 'aria-label'].forEach(a => {
+      if (el.getAttribute(a)) i18nAttr.push({ el, a, en: el.getAttribute(a) });
+    }));
+})();
+function setLang(l){
+  LANG = l === 'es' ? 'es' : 'en';
+  const tr = en => { if (LANG === 'en') return en; const k = en.trim(); return ES[k] ? en.replace(k, ES[k]) : en; };
+  i18nText.forEach(o => { o.n.nodeValue = tr(o.en); });
+  i18nAttr.forEach(o => o.el.setAttribute(o.a, tr(o.en)));
+  document.documentElement.lang = LANG;
+  document.title = tr(TITLE_EN);
+  document.querySelectorAll('#lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.l === LANG)));
+  try { localStorage.setItem('invierno-magico-lang', LANG); } catch (e) {}
+  if (window.__timerDone) document.getElementById('timerMsg').textContent =
+    T(T('The magical night is here! Thank you for celebrating with us.', '¡Llegó la noche mágica! Gracias por celebrar con nosotros.'), '¡Llegó la noche mágica! Gracias por celebrar con nosotros.');
+}
+document.querySelectorAll('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.l)));
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem('invierno-magico-lang'); } catch (e) {}
+  if ((qs.get('lang') || saved) === 'es') setLang('es');
+})();
+
 // Abrir sobre
 document.getElementById('openBtn').addEventListener('click', () => {
   document.getElementById('cover').classList.add('open');
@@ -482,7 +541,7 @@ const pad = n => String(n).padStart(2, '0');
 function tick(){
   const diff = target - Date.now();
   if (diff <= 0) {
-    ['d','h','m','s'].forEach(id => document.getElementById(id).textContent = '00');
+    window.__timerDone = true; ['d','h','m','s'].forEach(id => document.getElementById(id).textContent = '00');
     document.getElementById('timerMsg').textContent = 'The magical night is here! Thank you for celebrating with us.';
     return;
   }
@@ -500,10 +559,10 @@ document.getElementById('calBtn').addEventListener('click', () => {
   const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Invierno Magico//ES','BEGIN:VEVENT',
     'UID:cena-graduacion-9no-2026@invitacion', 'DTSTAMP:' + f(Date.now()),
     'DTSTART:' + f(CONFIG.eventStart), 'DTEND:' + f(CONFIG.eventEnd),
-    'SUMMARY:9th Grade Graduation Dinner · Magical Winter',
-    'LOCATION:InterContinental Miramar Hotel\\, Miramar Room\\, 5th Floor\\, Panama City',
-    'DESCRIPTION:Enjoy a Magical Winter Night. Dress code: semi-formal.',
-    'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Tomorrow is the Graduation Dinner','END:VALARM',
+    T('SUMMARY:9th Grade Graduation Dinner · Magical Winter', 'SUMMARY:Cena de Graduación 9° Grado · Invierno Mágico'),
+    T('LOCATION:InterContinental Miramar Hotel\\, Miramar Room\\, 5th Floor\\, Panama City', 'LOCATION:Hotel InterContinental Miramar\\, Salón Miramar\\, Piso 5\\, Ciudad de Panamá'),
+    T('DESCRIPTION:Enjoy a Magical Winter Night. Dress code: semi-formal.', 'DESCRIPTION:Disfruta de una Noche Mágica de Invierno. Vestimenta: semi formal.'),
+    'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY',T('DESCRIPTION:Tomorrow is the Graduation Dinner', 'DESCRIPTION:Mañana es la Cena de Graduación'),'END:VALARM',
     'END:VEVENT','END:VCALENDAR'].join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
@@ -516,7 +575,10 @@ document.getElementById('rsvpForm').addEventListener('submit', e => {
   const name = document.getElementById('fName').value.trim();
   const yes = document.querySelector('input[name=att]:checked').value === 'si';
   const n = document.getElementById('fCount').value;
-  const msg = yes
+  const msg = LANG === 'es' ? (yes
+    ? `❄️ ¡Hola! Soy ${name} y confirmo mi asistencia a la Cena de Graduación de 9° Grado · Invierno Mágico (domingo 20 de diciembre, 5:30 p.m.). Asistiremos: ${n} persona(s). ✨`
+    : `❄️ ¡Hola! Soy ${name}. Muchas gracias por la invitación a la Cena de Graduación de 9° Grado; lamentablemente no podré asistir. ¡Felicidades y felices fiestas! ✨`)
+  : yes
     ? `❄️ Hi! This is ${name} and I confirm my attendance at the 9th Grade Graduation Dinner · Magical Winter (Sunday, December 20, 5:30 PM). Number of guests: ${n}. ✨`
     : `❄️ Hi! This is ${name}. Thank you so much for the invitation to the 9th Grade Graduation Dinner; unfortunately I won’t be able to attend. Congratulations and happy holidays! ✨`;
   const num = CONFIG.whatsapp.replace(/\D/g, '');
